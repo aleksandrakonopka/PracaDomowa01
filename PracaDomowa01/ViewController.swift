@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,UIGestureRecognizerDelegate {
     
     override func loadView() {
         view = UIView()
@@ -19,11 +19,30 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+        doubleTap.name = "double"
+        let trippleTap = UITapGestureRecognizer(target: self, action: #selector(trippleTapped))
+        trippleTap.name = "triple"
+        trippleTap.numberOfTapsRequired = 3
 //        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         doubleTap.numberOfTapsRequired = 2
+        doubleTap.delegate = self
+        trippleTap.delegate = self
+        
+
 //        view.addGestureRecognizer(longGesture)
         view.addGestureRecognizer(doubleTap)
+        view.addGestureRecognizer(trippleTap)
     }
+     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                                    shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool
+    {
+        if gestureRecognizer.name == "double"   &&
+        otherGestureRecognizer.name == "triple" {
+            return true
+        }
+        return false
+    }
+    
 //5. Podniesienie i przenoszenie obsłuż przy pomocy `UILongPressGestureRecognizer`
     @objc func longGestureFunc(_ tap: UILongPressGestureRecognizer) {
        let point = tap.location(in: self.view)
@@ -70,7 +89,17 @@ class ViewController: UIViewController {
         spawnedView.addGestureRecognizer(longGesture)
         
     }
-    
+    @objc func trippleTapped(_ tap: UITapGestureRecognizer) {
+        let point = tap.location(in: self.view)
+            if let chosenBall = self.view.hitTest(point, with: nil)
+            {
+                if chosenBall != self.view{
+                animation(myBall: chosenBall, scale: 2, alpha: 0.0, duration: 0.3)
+                chosenBall.removeFromSuperview()
+                }
+            }
+        
+    }
     private func animation(myBall : UIView, scale: CGFloat, alpha: CGFloat, duration: TimeInterval)
     {
         UIView.animate(withDuration: duration, animations: {
