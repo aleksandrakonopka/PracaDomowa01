@@ -43,20 +43,22 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
     
 //5. Podniesienie i przenoszenie obsłuż przy pomocy `UILongPressGestureRecognizer`
     @objc func longGestureFunc(_ tap: UILongPressGestureRecognizer) {
-
-                if tap.state == .began
+                if let kulka = tap.view
                 {
-                    animation(myBall: tap.view!, scale: 1.2, alpha: 0.6 ,duration: 0.3)
-                }
-                
-                if tap.state == .changed
-                {
-                    tap.view?.center.x =  tap.location(in: self.view).x - tap.location(in: tap.view).x + (1/2)*(tap.view?.bounds.height)!
-                    tap.view?.center.y =  tap.location(in: self.view).y - tap.location(in: tap.view).y + (1/2)*(tap.view?.bounds.height)!
-                }
-                if tap.state == .ended
-                {
-                    animation(myBall: tap.view!, scale: 1 , alpha: 1.0, duration: 0.3)
+                    if tap.state == .began
+                    {
+                        animation(myBall: kulka, scale: 1.2, alpha: 0.6 ,duration: 0.3)
+                    }
+        
+                    if tap.state == .changed
+                    {
+                        kulka.center.x =  tap.location(in: self.view).x - tap.location(in: kulka).x + (1/2)*kulka.bounds.height
+                        kulka.center.y =  tap.location(in: self.view).y - tap.location(in: kulka).y + (1/2)*kulka.bounds.height
+                    }
+                    if tap.state == .ended
+                    {
+                        animation(myBall: kulka, scale: 1 , alpha: 1.0, duration: 0.3)
+                    }
                 }
             }
 
