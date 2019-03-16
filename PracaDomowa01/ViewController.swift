@@ -17,19 +17,17 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
         doubleTap.name = "double"
         let trippleTap = UITapGestureRecognizer(target: self, action: #selector(trippleTapped))
         trippleTap.name = "triple"
         trippleTap.numberOfTapsRequired = 3
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         doubleTap.numberOfTapsRequired = 2
         doubleTap.delegate = self
         trippleTap.delegate = self
         
 
-//        view.addGestureRecognizer(longGesture)
         view.addGestureRecognizer(doubleTap)
         view.addGestureRecognizer(trippleTap)
     }
@@ -43,7 +41,7 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
         return false
     }
     
-//5. Podniesienie i przenoszenie obsłuż przy pomocy `UILongPressGestureRecognizer`
+
     @objc func longGestureFunc(_ tap: UILongPressGestureRecognizer) {
        let point = tap.location(in: self.view)
         if let chosenBall = self.view.hitTest(point, with: nil)
@@ -52,25 +50,17 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
                 if tap.state == .began
                 {
                     animation(myBall: chosenBall, scale: 1.2, alpha: 0.6 ,duration: 0.3)
-                    print("Centrum: \(chosenBall.center)")
-                    print("W view: \(tap.location(in: self.view))")
-                    print("W chosenBall\(tap.location(in: chosenBall))")
-                    //print("Frame: \(chosenBall.frame.height)")
-                    print("Bounds: \(chosenBall.bounds.height)")
                 }
                 
                 if tap.state == .changed
                 {
-                    print(chosenBall.center)
                     chosenBall.center.x =  tap.location(in: self.view).x - tap.location(in: chosenBall).x + (1/2)*chosenBall.bounds.height
                     chosenBall.center.y =  tap.location(in: self.view).y - tap.location(in: chosenBall).y + (1/2)*chosenBall.bounds.width
-                    print(chosenBall.center)
                 }
                 if tap.state == .ended
                 {
                     animation(myBall: chosenBall, scale: 1 , alpha: 1.0, duration: 0.3)
                 }
-            //click.removeFromSuperview()
             }
            
         }
