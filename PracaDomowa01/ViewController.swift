@@ -17,7 +17,7 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        // Do any additional setup after loading the view, typically from a nib.
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
         doubleTap.name = "double"
         let trippleTap = UITapGestureRecognizer(target: self, action: #selector(trippleTapped))
@@ -41,30 +41,25 @@ class ViewController: UIViewController,UIGestureRecognizerDelegate {
         return false
     }
     
-
+//5. Podniesienie i przenoszenie obsłuż przy pomocy `UILongPressGestureRecognizer`
     @objc func longGestureFunc(_ tap: UILongPressGestureRecognizer) {
-       let point = tap.location(in: self.view)
-        if let chosenBall = self.view.hitTest(point, with: nil)
-        {
-            if chosenBall != self.view{
+
                 if tap.state == .began
                 {
-                    animation(myBall: chosenBall, scale: 1.2, alpha: 0.6 ,duration: 0.3)
+                    animation(myBall: tap.view!, scale: 1.2, alpha: 0.6 ,duration: 0.3)
                 }
                 
                 if tap.state == .changed
                 {
-                    chosenBall.center.x =  tap.location(in: self.view).x - tap.location(in: chosenBall).x + (1/2)*chosenBall.bounds.height
-                    chosenBall.center.y =  tap.location(in: self.view).y - tap.location(in: chosenBall).y + (1/2)*chosenBall.bounds.width
+                    tap.view?.center.x =  tap.location(in: self.view).x - tap.location(in: tap.view).x + (1/2)*(tap.view?.bounds.height)!
+                    tap.view?.center.y =  tap.location(in: self.view).y - tap.location(in: tap.view).y + (1/2)*(tap.view?.bounds.height)!
                 }
                 if tap.state == .ended
                 {
-                    animation(myBall: chosenBall, scale: 1 , alpha: 1.0, duration: 0.3)
+                    animation(myBall: tap.view!, scale: 1 , alpha: 1.0, duration: 0.3)
                 }
             }
-           
-        }
-    }
+
     @objc func doubleTapped(_ tap: UITapGestureRecognizer) {
         let size: CGFloat = 100
         let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(longGestureFunc))
